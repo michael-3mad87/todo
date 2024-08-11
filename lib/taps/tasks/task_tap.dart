@@ -1,5 +1,6 @@
 import 'package:easy_date_timeline/easy_date_timeline.dart';
 import 'package:flutter/material.dart';
+import 'package:todo/models/task_model.dart';
 import 'package:todo/taps/tasks/task_item.dart';
 
 class TaskPage extends StatefulWidget {
@@ -11,9 +12,14 @@ class TaskPage extends StatefulWidget {
 }
 
 class _TaskPageState extends State<TaskPage> {
-  List task = List.generate(10, (index) => null);
-  // final EasyInfiniteDateTimelineController _controller =
-  //     EasyInfiniteDateTimelineController();
+  List<TaskModel> tasks = List.generate(
+    10,
+    (index) => TaskModel(
+      title: 'title${index + 1}',
+      description: 'desc${index + 1}',
+      date: DateTime.now(),
+    ),
+  );
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,9 +41,11 @@ class _TaskPageState extends State<TaskPage> {
           Expanded(
             child: ListView.builder(
               padding: EdgeInsets.only(top: 20),
-              itemCount: 15,
+              itemCount: tasks.length,
               itemBuilder: (BuildContext context, int index) {
-                return TaskItem();
+                return TaskItem(
+                  taskModel: tasks[index],
+                );
               },
             ),
           ),
