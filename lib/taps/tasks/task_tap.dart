@@ -35,6 +35,7 @@ class TaskPage extends StatelessWidget {
               itemBuilder: (BuildContext context, int index) {
                 return TaskItem(
                   taskModel: tasksProvider.tasks[index],
+                  index: index,
                 );
               },
             ),

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo/app_them.dart';
 import 'package:todo/home_page.dart';
+import 'package:todo/taps/tasks/task_edit.dart';
 import 'package:todo/taps/tasks/tasks_provider.dart';
 
 Future<void> main() async {
@@ -29,6 +30,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       routes: {
         HomePage.routName: (_) => HomePage(),
+        TaskEdit.routeName: (_) => TaskEdit(),
       },
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
