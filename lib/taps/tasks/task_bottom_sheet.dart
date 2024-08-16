@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:todo/app_them.dart';
+import 'package:todo/firebase_function.dart';
+import 'package:todo/models/task_model.dart';
 import 'package:todo/taps/tasks/custom_button.dart';
+import 'package:todo/taps/tasks/tasks_provider.dart';
 import 'package:todo/taps/tasks/text_form_field.dart';
 
 class AddTaskBottomSheet extends StatefulWidget {
@@ -27,7 +31,7 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
         height: MediaQuery.of(context).size.height * .55,
         padding: EdgeInsets.all(20),
         child: Column(
-            mainAxisSize: MainAxisSize.min,
+          mainAxisSize: MainAxisSize.min,
           children: [
             Text(
               "Add new task",
@@ -116,6 +120,21 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
   }
 
   void addTask() {
-    print('task added');
+    FirebaseFunctions.addTasksToFireStore(
+      TaskModel(
+        title: titleController.text,
+        description: descriptionController.text,
+        date: selectedTime,
+      ),
+    ).timeout(Duration(microseconds: 500), onTimeout: () {
+      Navigator.of(context).pop();
+      Provider.of<TasksProvider>(context , listen: false).getAllTasks();
+      print('taskAded');
+    }).catchError((e) {
+      print('Error${e}');
+    });
   }
 }
+/* 
+when you just access or call from provider method or variable listen must be false , when you get data by default true 
+*/
