@@ -1,11 +1,24 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:todo/app_them.dart';
 import 'package:todo/home_page.dart';
-import 'package:todo/taps/tasks/task_tap.dart';
-import 'package:todo/taps/setting/setting_tap.dart';
+import 'package:todo/taps/tasks/task_edit.dart';
+import 'package:todo/taps/tasks/tasks_provider.dart';
 
-void main() {
-  runApp(const MyApp());
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  await FirebaseFirestore.instance.disableNetwork();
+  FirebaseFirestore.instance.settings =
+      Settings(cacheSizeBytes: Settings.CACHE_SIZE_UNLIMITED);
+  runApp(
+    ChangeNotifierProvider(
+      create: (_) => TasksProvider()..getAllTasks(),
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -16,11 +29,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       routes: {
-        TaskPage.routName: (_) => TaskPage(),
-        SettingPage.routName: (_) => SettingPage(),
-        HomePage.routName:(_) => HomePage(),
+        HomePage.routName: (_) => HomePage(),
+        TaskEdit.routeName: (_) => TaskEdit(),
       },
-      initialRoute: HomePage.routName,
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
       themeMode: ThemeMode.light,
