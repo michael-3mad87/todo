@@ -19,41 +19,39 @@ class _HomePageState extends State<HomePage> {
   ];
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: tabs[currentTapIndex],
-        bottomNavigationBar: BottomAppBar(
-          shape: CircularNotchedRectangle(),
-          notchMargin: 10,
-          padding: EdgeInsets.zero,
-          clipBehavior: Clip.antiAliasWithSaveLayer,
-          child: BottomNavigationBar(
-            currentIndex: currentTapIndex,
-            onTap: (value) {
-              currentTapIndex = value;
-              setState(() {});
-            },
-            items: [
-              BottomNavigationBarItem(
-                  icon: Icon(
-                    Icons.list,
-                    size: 35,
-                  ),
-                  label: 'tasks'),
-              BottomNavigationBarItem(
-                  icon: Icon(
-                    Icons.settings_outlined,
-                    size: 35,
-                  ),
-                  label: 'setting'),
-            ],
-          ),
+    return Scaffold(
+      body: tabs[currentTapIndex],
+      bottomNavigationBar: BottomAppBar(
+        shape: CircularNotchedRectangle(),
+        notchMargin: 10,
+        padding: EdgeInsets.zero,
+        clipBehavior: Clip.antiAliasWithSaveLayer,
+        child: BottomNavigationBar(
+          currentIndex: currentTapIndex,
+          onTap: (value) {
+            currentTapIndex = value;
+            setState(() {});
+          },
+          items: [
+            BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.list,
+                  size: 35,
+                ),
+                label: 'tasks'),
+            BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.settings_outlined,
+                  size: 35,
+                ),
+                label: 'setting'),
+          ],
         ),
-        floatingActionButton:FloatingActionButton(onPressed: ()=> showModalBottomSheet(context: context,builder: (context) =>AddTaskBottomSheet() ,),
-        child:Icon(Icons.add , size: 32,) ,
-        ) ,
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       ),
+      floatingActionButton:FloatingActionButton(onPressed: ()=> showModalBottomSheet(context: context,builder: (context) =>AddTaskBottomSheet() ,),
+      child:Icon(Icons.add , size: 32,) ,
+      ) ,
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
 }

@@ -23,9 +23,4 @@ class TasksProvider extends ChangeNotifier {
     selectedDate = date;
     notifyListeners();
   }
-
-  Future<void> getUpdate(String id, TaskModel taskModel) async {
-    await FirebaseFunctions.updateTaskInFireStore(id, taskModel);
-    notifyListeners();
-  }
 }
