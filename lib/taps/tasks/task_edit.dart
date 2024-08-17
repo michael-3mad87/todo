@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:todo/app_them.dart';
@@ -151,9 +152,23 @@ class _TaskEditState extends State<TaskEdit> {
         .timeout(Duration(microseconds: 500), onTimeout: () {
       Navigator.of(context).pop();
       Provider.of<TasksProvider>(context, listen: false).getAllTasks();
-      print('taskAded');
+    Fluttertoast.showToast(
+        msg: "Task updated successfully",
+        toastLength: Toast.LENGTH_LONG,
+        timeInSecForIosWeb: 5,
+        backgroundColor: AppTheme.green,
+        textColor: AppTheme.white,
+        fontSize: 16.0
+    );
     }).catchError((e) {
-      print('Error${e}');
+      Fluttertoast.showToast(
+        msg: "Something wrong",
+        toastLength: Toast.LENGTH_LONG,
+        timeInSecForIosWeb: 5,
+        backgroundColor: AppTheme.red,
+        textColor: AppTheme.white,
+        fontSize: 16.0
+    );
     });
   }
 }
