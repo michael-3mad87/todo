@@ -4,8 +4,8 @@ import 'package:todo/taps/tasks/task_bottom_sheet.dart';
 import 'package:todo/taps/tasks/task_tap.dart';
 
 class HomePage extends StatefulWidget {
-  HomePage({super.key});
-  static String routName = '/';
+  const HomePage({super.key});
+  static String routName = 'home';
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -14,15 +14,15 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int currentTapIndex = 0;
   List<Widget> tabs = [
-    TaskPage(),
-    SettingPage(),
+    const TaskPage(),
+    const SettingPage(),
   ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: tabs[currentTapIndex],
       bottomNavigationBar: BottomAppBar(
-        shape: CircularNotchedRectangle(),
+        shape: const CircularNotchedRectangle(),
         notchMargin: 10,
         padding: EdgeInsets.zero,
         clipBehavior: Clip.antiAliasWithSaveLayer,
@@ -32,7 +32,7 @@ class _HomePageState extends State<HomePage> {
             currentTapIndex = value;
             setState(() {});
           },
-          items: [
+          items: const [
             BottomNavigationBarItem(
                 icon: Icon(
                   Icons.list,
@@ -48,8 +48,8 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
-      floatingActionButton:FloatingActionButton(onPressed: ()=> showModalBottomSheet(context: context,builder: (context) =>AddTaskBottomSheet() ,),
-      child:Icon(Icons.add , size: 32,) ,
+      floatingActionButton:FloatingActionButton(onPressed: ()=> showModalBottomSheet(context: context,builder: (context) =>const AddTaskBottomSheet() ,),
+      child:const Icon(Icons.add , size: 32,) ,
       ) ,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );

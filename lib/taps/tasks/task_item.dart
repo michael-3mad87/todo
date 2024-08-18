@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+
 import 'package:provider/provider.dart';
 import 'package:todo/app_them.dart';
 import 'package:todo/firebase_function.dart';
@@ -9,9 +10,13 @@ import 'package:todo/taps/tasks/task_edit.dart';
 import 'package:todo/taps/tasks/tasks_provider.dart';
 
 class TaskItem extends StatefulWidget {
-  TaskItem({super.key, required this.taskModel, required this.index});
-  TaskModel taskModel;
-  int index;
+  const TaskItem({
+    super.key,
+    required this.taskModel,
+    required this.index,
+  });
+ final TaskModel taskModel;
+ final int index;
 
   @override
   State<TaskItem> createState() => _TaskItemState();
@@ -37,7 +42,7 @@ class _TaskItemState extends State<TaskItem> {
     TasksProvider tasksProvider = Provider.of<TasksProvider>(context);
     ThemeData theme = Theme.of(context);
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+      margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
       child: Slidable(
         key: const ValueKey(0),
         startActionPane: ActionPane(
@@ -61,7 +66,7 @@ class _TaskItemState extends State<TaskItem> {
                 arguments: tasksProvider.tasks[widget.index]);
           },
           child: Container(
-            padding: EdgeInsets.all(20),
+            padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
               color: AppTheme.white,
               borderRadius: BorderRadius.circular(20),
@@ -73,7 +78,7 @@ class _TaskItemState extends State<TaskItem> {
                   color: isDone ? AppTheme.green : theme.primaryColor,
                   width: 4,
                   height: 62,
-                  margin: EdgeInsetsDirectional.only(end: 10),
+                  margin: const EdgeInsetsDirectional.only(end: 10),
                 ),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -96,7 +101,7 @@ class _TaskItemState extends State<TaskItem> {
                     )
                   ],
                 ),
-                Spacer(),
+                const Spacer(),
                 GestureDetector(
                   onTap: reflectDone,
                   child: isDone
@@ -131,9 +136,8 @@ class _TaskItemState extends State<TaskItem> {
 
   void deleteTask(BuildContext context) {
     FirebaseFunctions.deleteTaskFromFireStore(widget.taskModel.id)
-        .timeout(Duration(microseconds: 500), onTimeout: () {
-      Provider.of<TasksProvider>(context, listen: false)
-          .getAllTasks();
+        .timeout(const Duration(microseconds: 500), onTimeout: () {
+      Provider.of<TasksProvider>(context, listen: false).getAllTasks();
       isDone = false;
     }).catchError((e) {
       Fluttertoast.showToast(

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -11,7 +10,7 @@ import 'package:todo/taps/tasks/tasks_provider.dart';
 import 'package:todo/taps/tasks/text_form_field.dart';
 
 class AddTaskBottomSheet extends StatefulWidget {
-  AddTaskBottomSheet({super.key});
+  const AddTaskBottomSheet({super.key});
 
   @override
   State<AddTaskBottomSheet> createState() => _AddTaskBottomSheetState();
@@ -30,7 +29,7 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
       key: formKey,
       child: Container(
         height: MediaQuery.of(context).size.height * .55,
-        padding: EdgeInsets.all(20),
+        padding: const EdgeInsets.all(20),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -41,7 +40,7 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
                   .titleLarge!
                   .copyWith(color: AppTheme.black),
             ),
-            SizedBox(
+            const SizedBox(
               height: 14,
             ),
             CustomTextFormField(
@@ -54,7 +53,7 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
                 return null;
               },
             ),
-            SizedBox(
+            const SizedBox(
               height: 14,
             ),
             CustomTextFormField(
@@ -68,7 +67,7 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
                 return null;
               },
             ),
-            SizedBox(
+            const SizedBox(
               height: 14,
             ),
             Text(
@@ -77,7 +76,7 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
                     fontWeight: FontWeight.w400,
                   ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 8,
             ),
             InkWell(
@@ -86,7 +85,7 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
                     context: context,
                     firstDate: DateTime.now(),
                     lastDate: DateTime.now().add(
-                      Duration(days: 365),
+                      const Duration(days: 365),
                     ),
                     initialEntryMode: DatePickerEntryMode.calendarOnly,
                     initialDate: selectedTime);
@@ -103,12 +102,12 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
                     ?.copyWith(fontWeight: FontWeight.bold),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             CustomButton(
               label: 'Save',
-              onpressed: () {
+              oppressed: () {
                 if (formKey.currentState!.validate()) {
                   addTask();
                 }
@@ -127,7 +126,7 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
         description: descriptionController.text,
         date: selectedTime,
       ),
-    ).timeout(Duration(microseconds: 500), onTimeout: () {
+    ).timeout(const Duration(microseconds: 500), onTimeout: () {
       Navigator.of(context).pop();
       Provider.of<TasksProvider>(context , listen: false).getAllTasks();
      Fluttertoast.showToast(

@@ -1,4 +1,3 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
@@ -24,6 +23,7 @@ class _TaskEditState extends State<TaskEdit> {
   DateTime selectedTime = DateTime.now();
   DateFormat dateFormat = DateFormat('dd/MM/yyyy');
   final formKey = GlobalKey<FormState>();
+  @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     TaskModel args = ModalRoute.of(context)!.settings.arguments as TaskModel;
@@ -47,7 +47,7 @@ class _TaskEditState extends State<TaskEdit> {
               key: formKey,
               child: Container(
                 height: MediaQuery.of(context).size.height * .55,
-                padding: EdgeInsets.all(20),
+                padding: const EdgeInsets.all(20),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -58,7 +58,7 @@ class _TaskEditState extends State<TaskEdit> {
                           .titleLarge!
                           .copyWith(color: AppTheme.black),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 14,
                     ),
                     CustomTextFormField(
@@ -71,7 +71,7 @@ class _TaskEditState extends State<TaskEdit> {
                         return null;
                       },
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 14,
                     ),
                     CustomTextFormField(
@@ -85,7 +85,7 @@ class _TaskEditState extends State<TaskEdit> {
                         return null;
                       },
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 14,
                     ),
                     Text(
@@ -94,7 +94,7 @@ class _TaskEditState extends State<TaskEdit> {
                             fontWeight: FontWeight.w400,
                           ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 8,
                     ),
                     InkWell(
@@ -103,7 +103,7 @@ class _TaskEditState extends State<TaskEdit> {
                             context: context,
                             firstDate: DateTime.now(),
                             lastDate: DateTime.now().add(
-                              Duration(days: 365),
+                              const Duration(days: 365),
                             ),
                             initialEntryMode: DatePickerEntryMode.calendarOnly,
                             initialDate: selectedTime);
@@ -120,12 +120,12 @@ class _TaskEditState extends State<TaskEdit> {
                             ?.copyWith(fontWeight: FontWeight.bold),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
                     CustomButton(
                       label: 'Save Changes',
-                      onpressed: () async {
+                      oppressed: () async {
                         if (formKey.currentState!.validate()) {
                           taskUpdated(args.id);
                         }
@@ -149,7 +149,7 @@ class _TaskEditState extends State<TaskEdit> {
       date: selectedTime,
     );
     FirebaseFunctions.updateTaskInFireStore(id, updatedTask)
-        .timeout(Duration(microseconds: 500), onTimeout: () {
+        .timeout(const Duration(microseconds: 500), onTimeout: () {
       Navigator.of(context).pop();
       Provider.of<TasksProvider>(context, listen: false).getAllTasks();
     Fluttertoast.showToast(

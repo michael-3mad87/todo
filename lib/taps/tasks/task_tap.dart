@@ -1,14 +1,13 @@
 import 'package:easy_date_timeline/easy_date_timeline.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:todo/app_them.dart';
 import 'package:todo/taps/tasks/task_item.dart';
 import 'package:todo/taps/tasks/tasks_provider.dart';
 
 class TaskPage extends StatelessWidget {
+  const TaskPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     TasksProvider tasksProvider = Provider.of<TasksProvider>(context);
@@ -38,11 +37,11 @@ class TaskPage extends StatelessWidget {
                 padding: EdgeInsets.only(top: screenHeight * .1),
                 child: EasyInfiniteDateTimeLine(
                   firstDate: DateTime.now().subtract(
-                    Duration(days: 365),
+                    const Duration(days: 365),
                   ),
                   focusDate: tasksProvider.selectedDate,
                   lastDate: DateTime.now().add(
-                    Duration(days: 365),
+                    const Duration(days: 365),
                   ),
                   showTimelineHeader: false,
                   onDateChange: (selectedDate) {
@@ -59,7 +58,7 @@ class TaskPage extends StatelessWidget {
                         borderRadius: BorderRadius.circular(16)
                       ),
                       dayStrStyle: TextStyle(color: AppTheme.black),
-                      monthStrStyle: TextStyle(color: Colors.transparent),
+                      monthStrStyle: const TextStyle(color: Colors.transparent),
                     ),
                     activeDayStyle: DayStyle(
                       decoration: BoxDecoration(
@@ -68,7 +67,7 @@ class TaskPage extends StatelessWidget {
                       ),
                       dayStrStyle: TextStyle(color: AppTheme.primaryColor),
                       dayNumStyle :Theme.of(context).textTheme.titleLarge?.copyWith(color: AppTheme.primaryColor),
-                      monthStrStyle: TextStyle(color: Colors.transparent),
+                      monthStrStyle: const TextStyle(color: Colors.transparent),
                     ),
                     inactiveDayStyle: DayStyle(
                       decoration: BoxDecoration(
@@ -76,7 +75,7 @@ class TaskPage extends StatelessWidget {
                         borderRadius: BorderRadius.circular(16)
                       ),
                       dayStrStyle: TextStyle(color: AppTheme.black),
-                      monthStrStyle: TextStyle(color: Colors.transparent),
+                      monthStrStyle: const TextStyle(color: Colors.transparent),
                     ),
                   ),
                 ),
@@ -85,7 +84,7 @@ class TaskPage extends StatelessWidget {
           ),
           Expanded(
             child: ListView.builder(
-              padding: EdgeInsets.only(top: 20),
+              padding: const EdgeInsets.only(top: 20),
               itemCount: tasksProvider.tasks.length,
               itemBuilder: (BuildContext context, int index) {
                 return TaskItem(
