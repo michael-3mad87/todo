@@ -3,6 +3,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:provider/provider.dart';
+import 'package:todo/Auth/user_provider.dart';
 import 'package:todo/app_them.dart';
 import 'package:todo/firebase_function.dart';
 import 'package:todo/models/task_model.dart';
@@ -49,7 +50,7 @@ class _TaskItemState extends State<TaskItem> {
           motion: const ScrollMotion(),
           children: [
             SlidableAction(
-              onPressed: (context) {
+              onPressed: (_) {
                 deleteTask(context);
               },
               backgroundColor: AppTheme.red,
@@ -135,9 +136,10 @@ class _TaskItemState extends State<TaskItem> {
   }
 
   void deleteTask(BuildContext context) {
-    FirebaseFunctions.deleteTaskFromFireStore(widget.taskModel.id)
-        .timeout(const Duration(microseconds: 500), onTimeout: () {
-      Provider.of<TasksProvider>(context, listen: false).getAllTasks();
+       final userId = Provider.of<UserProvider>(context, listen: false).currentUser!.id;
+    FirebaseFunctions.deleteTaskFromFireStore(widget.taskModel.id ,  userId)
+        .then( (_) {
+      Provider.of<TasksProvider>(context, listen: false).getAllTasks(userId);
       isDone = false;
     }).catchError((e) {
       Fluttertoast.showToast(

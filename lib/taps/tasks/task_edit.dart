@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:todo/Auth/user_provider.dart';
 import 'package:todo/app_them.dart';
 import 'package:todo/firebase_function.dart';
 import 'package:todo/models/task_model.dart';
@@ -77,7 +78,7 @@ class _TaskEditState extends State<TaskEdit> {
                     CustomTextFormField(
                       controller: descriptionController,
                       hintText: 'Enter task description',
-                      maxlines: 4,
+                      maxLines: 4,
                       validator: (value) {
                         if (value == null || value.trim().isEmpty) {
                           return 'Please enter description';
@@ -142,16 +143,17 @@ class _TaskEditState extends State<TaskEdit> {
   }
 
   void taskUpdated(String id) {
+       final userId = Provider.of<UserProvider>(context, listen: false).currentUser!.id;
     TaskModel updatedTask = TaskModel(
       id: id,
       title: titleController.text.trim(),
       description: descriptionController.text.trim(),
       date: selectedTime,
     );
-    FirebaseFunctions.updateTaskInFireStore(id, updatedTask)
-        .timeout(const Duration(microseconds: 500), onTimeout: () {
+    FirebaseFunctions.updateTaskInFireStore(id, updatedTask ,  userId)
+        .then((_) {
       Navigator.of(context).pop();
-      Provider.of<TasksProvider>(context, listen: false).getAllTasks();
+      Provider.of<TasksProvider>(context, listen: false).getAllTasks( userId);
     Fluttertoast.showToast(
         msg: "Task updated successfully",
         toastLength: Toast.LENGTH_LONG,

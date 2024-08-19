@@ -5,9 +5,9 @@ import 'package:todo/models/task_model.dart';
 class TasksProvider extends ChangeNotifier {
   List<TaskModel> tasks = [];
   DateTime selectedDate = DateTime.now();
-  Future<void> getAllTasks() async {
+  Future<void> getAllTasks(String userId) async {
     //make filter by date using where
-    List<TaskModel> allTasks = await FirebaseFunctions.getTasksFromFireStore();
+    List<TaskModel> allTasks = await FirebaseFunctions.getTasksFromFireStore(userId);
     tasks = allTasks
         .where(
           (task) =>

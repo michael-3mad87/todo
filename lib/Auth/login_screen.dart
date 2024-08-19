@@ -1,6 +1,12 @@
-
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:provider/provider.dart';
 import 'package:todo/Auth/register_screen.dart';
+import 'package:todo/Auth/user_provider.dart';
+import 'package:todo/app_them.dart';
+import 'package:todo/firebase_function.dart';
+import 'package:todo/home_page.dart';
 import 'package:todo/taps/tasks/custom_button.dart';
 import 'package:todo/taps/tasks/text_form_field.dart';
 
@@ -88,6 +94,30 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void login() {
-    if (formKey.currentState!.validate()) {}
+    if (formKey.currentState!.validate()) {
+      FirebaseFunctions.login(
+        email: emailController.text,
+        password: passwordController.text,
+      ).then(
+        (user) {
+          Provider.of<UserProvider>(context, listen: false).updateUser(user);
+          Navigator.pushReplacementNamed(context, HomePage.routName);
+        },
+      ).catchError(
+        (error) {
+          String? message;
+          if (error is FirebaseAuthException) {
+            message = error.message;
+          }
+          Fluttertoast.showToast(
+              msg: message ?? "Something wrong",
+              toastLength: Toast.LENGTH_LONG,
+              timeInSecForIosWeb: 5,
+              backgroundColor: AppTheme.red,
+              textColor: AppTheme.white,
+              fontSize: 16.0);
+        },
+      );
+    }
   }
 }

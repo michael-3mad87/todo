@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:provider/provider.dart';
 import 'package:todo/Auth/login_screen.dart';
+import 'package:todo/Auth/user_provider.dart';
+import 'package:todo/app_them.dart';
+import 'package:todo/firebase_function.dart';
+import 'package:todo/home_page.dart';
 import 'package:todo/taps/tasks/custom_button.dart';
 import 'package:todo/taps/tasks/text_form_field.dart';
 
 class RegisterScreen extends StatefulWidget {
   static const String routeName = '/register';
- const RegisterScreen({super.key});
+  const RegisterScreen({super.key});
 
   @override
   State<RegisterScreen> createState() => _RegisterScreenState();
@@ -99,6 +105,27 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   void register() {
-    if (formKey.currentState!.validate()) {}
+    if (formKey.currentState!.validate()) {
+      FirebaseFunctions.register(
+        nameController.text,
+        passwordController.text,
+        emailController.text,
+      ).then(
+        (user) {
+          Provider.of<UserProvider>(context, listen: false).updateUser(user);
+          Navigator.pushReplacementNamed(context, HomePage.routName);
+        },
+      ).catchError(
+        (error) {
+          Fluttertoast.showToast(
+              msg: "Something wrong",
+              toastLength: Toast.LENGTH_LONG,
+              timeInSecForIosWeb: 5,
+              backgroundColor: AppTheme.red,
+              textColor: AppTheme.white,
+              fontSize: 16.0);
+        },
+      );
+    }
   }
 }

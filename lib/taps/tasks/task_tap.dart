@@ -1,17 +1,30 @@
 import 'package:easy_date_timeline/easy_date_timeline.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:todo/Auth/user_provider.dart';
 import 'package:todo/app_them.dart';
 import 'package:todo/taps/tasks/task_item.dart';
 import 'package:todo/taps/tasks/tasks_provider.dart';
 
-class TaskPage extends StatelessWidget {
+class TaskPage extends StatefulWidget {
   const TaskPage({super.key});
 
   @override
+  State<TaskPage> createState() => _TaskPageState();
+}
+
+class _TaskPageState extends State<TaskPage> {
+  bool getTasksForOnce = true;
+  @override
   Widget build(BuildContext context) {
     TasksProvider tasksProvider = Provider.of<TasksProvider>(context);
+    final userId =
+        Provider.of<UserProvider>(context, listen: false).currentUser!.id;
     double screenHeight = MediaQuery.of(context).size.height;
+    if (getTasksForOnce) {
+      tasksProvider.getAllTasks(userId);
+      getTasksForOnce = false;
+    }
     return Scaffold(
       body: Column(
         children: [
@@ -46,34 +59,33 @@ class TaskPage extends StatelessWidget {
                   showTimelineHeader: false,
                   onDateChange: (selectedDate) {
                     tasksProvider.changeSelectedDate(selectedDate);
-                    tasksProvider.getAllTasks();
+                    tasksProvider.getAllTasks(userId);
                   },
                   activeColor: AppTheme.white,
-                  
                   dayProps: EasyDayProps(
-                    height: screenHeight*.11,
-                    todayStyle : DayStyle(
+                    height: screenHeight * .11,
+                    todayStyle: DayStyle(
                       decoration: BoxDecoration(
-                        color: AppTheme.white ,
-                        borderRadius: BorderRadius.circular(16)
-                      ),
+                          color: AppTheme.white,
+                          borderRadius: BorderRadius.circular(16)),
                       dayStrStyle: TextStyle(color: AppTheme.black),
                       monthStrStyle: const TextStyle(color: Colors.transparent),
                     ),
                     activeDayStyle: DayStyle(
                       decoration: BoxDecoration(
-                        color: AppTheme.white ,
-                        borderRadius: BorderRadius.circular(16)
-                      ),
+                          color: AppTheme.white,
+                          borderRadius: BorderRadius.circular(16)),
                       dayStrStyle: TextStyle(color: AppTheme.primaryColor),
-                      dayNumStyle :Theme.of(context).textTheme.titleLarge?.copyWith(color: AppTheme.primaryColor),
+                      dayNumStyle: Theme.of(context)
+                          .textTheme
+                          .titleLarge
+                          ?.copyWith(color: AppTheme.primaryColor),
                       monthStrStyle: const TextStyle(color: Colors.transparent),
                     ),
                     inactiveDayStyle: DayStyle(
                       decoration: BoxDecoration(
-                        color: AppTheme.white ,
-                        borderRadius: BorderRadius.circular(16)
-                      ),
+                          color: AppTheme.white,
+                          borderRadius: BorderRadius.circular(16)),
                       dayStrStyle: TextStyle(color: AppTheme.black),
                       monthStrStyle: const TextStyle(color: Colors.transparent),
                     ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:todo/Auth/user_provider.dart';
 import 'package:todo/app_them.dart';
 import 'package:todo/firebase_function.dart';
 import 'package:todo/models/task_model.dart';
@@ -59,7 +60,7 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
             CustomTextFormField(
               controller: descriptionController,
               hintText: 'Enter task description',
-              maxlines: 4,
+              maxLines: 4,
               validator: (value) {
                 if (value == null || value.trim().isEmpty) {
                   return 'Please enter description';
@@ -120,15 +121,17 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
   }
 
   void addTask() {
+       final userId = Provider.of<UserProvider>(context, listen: false).currentUser!.id;
     FirebaseFunctions.addTasksToFireStore(
       TaskModel(
         title: titleController.text,
         description: descriptionController.text,
         date: selectedTime,
       ),
-    ).timeout(const Duration(microseconds: 500), onTimeout: () {
+    userId ,
+    ).then( (_) {
       Navigator.of(context).pop();
-      Provider.of<TasksProvider>(context , listen: false).getAllTasks();
+      Provider.of<TasksProvider>(context , listen: false).getAllTasks( userId);
      Fluttertoast.showToast(
         msg: "Task added successfully",
         toastLength: Toast.LENGTH_LONG,
