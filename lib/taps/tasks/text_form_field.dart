@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:todo/app_them.dart';
+import 'package:todo/taps/setting/setting_provider.dart';
 
 class CustomTextFormField extends StatefulWidget {
   CustomTextFormField({
@@ -24,10 +27,17 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
   bool isObscure = false;
   @override
   Widget build(BuildContext context) {
+        SettingProvider settingProvider = Provider.of<SettingProvider>(context);
     return TextFormField(
+      style:TextStyle(color: settingProvider.themMode == ThemeMode.light
+                          ? AppTheme.darktItem
+                          : AppTheme.white,) ,
       controller: widget.controller,
       decoration: InputDecoration(
         hintText: widget.hintText,
+        hintStyle: TextStyle(color: settingProvider.themMode == ThemeMode.light
+                          ? AppTheme.darktItem
+                          : AppTheme.white,),
         suffixIcon: widget.isPassword
             ? IconButton(
                 onPressed: () {
@@ -35,11 +45,17 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
                   setState(() {});
                 },
                 icon: isObscure
-                    ? const Icon(
+                    ?  Icon(
                         Icons.visibility_off_outlined,
+                        color: settingProvider.themMode == ThemeMode.light
+                    ? AppTheme.darktItem
+                    : AppTheme.white,
                       )
-                    : const Icon(
+                    :  Icon(
                         Icons.visibility_outlined,
+                         color: settingProvider.themMode == ThemeMode.light
+                    ? AppTheme.darktItem
+                    : AppTheme.white,
                       ),
               )
             : null,

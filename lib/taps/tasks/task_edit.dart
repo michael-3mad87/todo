@@ -6,6 +6,7 @@ import 'package:todo/Auth/user_provider.dart';
 import 'package:todo/app_them.dart';
 import 'package:todo/firebase_function.dart';
 import 'package:todo/models/task_model.dart';
+import 'package:todo/taps/setting/setting_provider.dart';
 import 'package:todo/taps/tasks/custom_button.dart';
 import 'package:todo/taps/tasks/tasks_provider.dart';
 import 'package:todo/taps/tasks/text_form_field.dart';
@@ -36,14 +37,22 @@ class _TaskEditState extends State<TaskEdit> {
   @override
   Widget build(BuildContext context) {
     TaskModel args = ModalRoute.of(context)!.settings.arguments as TaskModel;
+    SettingProvider settingProvider = Provider.of<SettingProvider>(context);
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar( iconTheme: IconThemeData(
+          color: settingProvider.themMode == ThemeMode.light
+                    ? AppTheme.darktItem
+                    : AppTheme.white,
+        ),),
       body: Center(
         child: SafeArea(
           child: Container(
+            
             height: MediaQuery.of(context).size.height * .7,
             width: MediaQuery.of(context).size.width * .9,
-            decoration: BoxDecoration(color: AppTheme.white),
+            decoration: BoxDecoration(color: settingProvider.themMode == ThemeMode.light
+                          ? AppTheme.white
+                          : AppTheme.darktItem, ),
             child: Form(
               key: formKey,
               child: Container(
@@ -55,9 +64,11 @@ class _TaskEditState extends State<TaskEdit> {
                     Text(
                       " Edit task",
                       style: Theme.of(context)
-                          .textTheme
-                          .titleLarge!
-                          .copyWith(color: AppTheme.black),
+                  .textTheme
+                  .titleLarge!
+                  .copyWith(color: settingProvider.themMode == ThemeMode.light
+                          ? AppTheme.darktItem
+                          : AppTheme.white,),
                     ),
                     const SizedBox(
                       height: 14,
@@ -91,9 +102,12 @@ class _TaskEditState extends State<TaskEdit> {
                     ),
                     Text(
                       'select time ',
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            fontWeight: FontWeight.w400,
-                          ),
+                      style:  Theme.of(context).textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.w400,
+                      color: settingProvider.themMode == ThemeMode.light
+                          ? AppTheme.darktItem
+                          : AppTheme.white,
+                  ),
                     ),
                     const SizedBox(
                       height: 8,
@@ -116,9 +130,11 @@ class _TaskEditState extends State<TaskEdit> {
                       child: Text(
                         dateFormat.format(selectedTime),
                         style: Theme.of(context)
-                            .textTheme
-                            .titleMedium
-                            ?.copyWith(fontWeight: FontWeight.bold),
+                    .textTheme
+                    .titleMedium
+                    ?.copyWith(fontWeight: FontWeight.bold , color: settingProvider.themMode == ThemeMode.light
+                          ? AppTheme.darktItem
+                          : AppTheme.white, ),
                       ),
                     ),
                     const SizedBox(
@@ -143,34 +159,32 @@ class _TaskEditState extends State<TaskEdit> {
   }
 
   void taskUpdated(String id) {
-       final userId = Provider.of<UserProvider>(context, listen: false).currentUser!.id;
+    final userId =
+        Provider.of<UserProvider>(context, listen: false).currentUser!.id;
     TaskModel updatedTask = TaskModel(
       id: id,
       title: titleController.text.trim(),
       description: descriptionController.text.trim(),
       date: selectedTime,
     );
-    FirebaseFunctions.updateTaskInFireStore(id, updatedTask ,  userId)
-        .then((_) {
+    FirebaseFunctions.updateTaskInFireStore(id, updatedTask, userId).then((_) {
       Navigator.of(context).pop();
-      Provider.of<TasksProvider>(context, listen: false).getAllTasks( userId);
-    Fluttertoast.showToast(
-        msg: "Task updated successfully",
-        toastLength: Toast.LENGTH_LONG,
-        timeInSecForIosWeb: 5,
-        backgroundColor: AppTheme.green,
-        textColor: AppTheme.white,
-        fontSize: 16.0
-    );
+      Provider.of<TasksProvider>(context, listen: false).getAllTasks(userId);
+      Fluttertoast.showToast(
+          msg: "Task updated successfully",
+          toastLength: Toast.LENGTH_LONG,
+          timeInSecForIosWeb: 5,
+          backgroundColor: AppTheme.green,
+          textColor: AppTheme.white,
+          fontSize: 16.0);
     }).catchError((e) {
       Fluttertoast.showToast(
-        msg: "Something wrong",
-        toastLength: Toast.LENGTH_LONG,
-        timeInSecForIosWeb: 5,
-        backgroundColor: AppTheme.red,
-        textColor: AppTheme.white,
-        fontSize: 16.0
-    );
+          msg: "Something wrong",
+          toastLength: Toast.LENGTH_LONG,
+          timeInSecForIosWeb: 5,
+          backgroundColor: AppTheme.red,
+          textColor: AppTheme.white,
+          fontSize: 16.0);
     });
   }
 }

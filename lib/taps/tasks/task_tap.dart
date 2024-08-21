@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo/Auth/user_provider.dart';
 import 'package:todo/app_them.dart';
+import 'package:todo/taps/setting/setting_provider.dart';
 import 'package:todo/taps/tasks/task_item.dart';
 import 'package:todo/taps/tasks/tasks_provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class TaskPage extends StatefulWidget {
   const TaskPage({super.key});
@@ -18,6 +20,7 @@ class _TaskPageState extends State<TaskPage> {
   @override
   Widget build(BuildContext context) {
     TasksProvider tasksProvider = Provider.of<TasksProvider>(context);
+    SettingProvider settingProvider = Provider.of<SettingProvider>(context);
     final userId =
         Provider.of<UserProvider>(context, listen: false).currentUser!.id;
     double screenHeight = MediaQuery.of(context).size.height;
@@ -39,11 +42,12 @@ class _TaskPageState extends State<TaskPage> {
                 top: 40,
                 start: 20,
                 child: Text(
-                  'ToDo list',
-                  style: Theme.of(context)
-                      .textTheme
-                      .titleLarge
-                      ?.copyWith(color: AppTheme.white, fontSize: 22),
+                  AppLocalizations.of(context)!.todoList,
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      color: settingProvider.themMode == ThemeMode.light
+                          ? AppTheme.white
+                          : AppTheme.darktItem,
+                      fontSize: 22),
                 ),
               ),
               Padding(
@@ -66,14 +70,26 @@ class _TaskPageState extends State<TaskPage> {
                     height: screenHeight * .11,
                     todayStyle: DayStyle(
                       decoration: BoxDecoration(
-                          color: AppTheme.white,
+                            color: settingProvider.themMode == ThemeMode.light
+                          ? AppTheme.white
+                          : AppTheme.darktItem,
                           borderRadius: BorderRadius.circular(16)),
-                      dayStrStyle: TextStyle(color: AppTheme.black),
+                      dayStrStyle: TextStyle(color: settingProvider.themMode == ThemeMode.light
+                          ? AppTheme.darktBlack
+                          : AppTheme.white,),
                       monthStrStyle: const TextStyle(color: Colors.transparent),
+                      dayNumStyle: Theme.of(context)
+                          .textTheme
+                          .titleLarge
+                          ?.copyWith(color: settingProvider.themMode == ThemeMode.light
+                          ? AppTheme.darktBlack
+                          : AppTheme.white,),
                     ),
                     activeDayStyle: DayStyle(
                       decoration: BoxDecoration(
-                          color: AppTheme.white,
+                          color: settingProvider.themMode == ThemeMode.light
+                          ? AppTheme.white
+                          : AppTheme.darktItem,
                           borderRadius: BorderRadius.circular(16)),
                       dayStrStyle: TextStyle(color: AppTheme.primaryColor),
                       dayNumStyle: Theme.of(context)
@@ -84,10 +100,20 @@ class _TaskPageState extends State<TaskPage> {
                     ),
                     inactiveDayStyle: DayStyle(
                       decoration: BoxDecoration(
-                          color: AppTheme.white,
+                          color: settingProvider.themMode == ThemeMode.light
+                          ? AppTheme.white
+                          : AppTheme.darktItem,
                           borderRadius: BorderRadius.circular(16)),
-                      dayStrStyle: TextStyle(color: AppTheme.black),
+                      dayStrStyle: TextStyle(color: settingProvider.themMode == ThemeMode.light
+                          ? AppTheme.darktBlack
+                          : AppTheme.white,),
                       monthStrStyle: const TextStyle(color: Colors.transparent),
+                      dayNumStyle: Theme.of(context)
+                          .textTheme
+                          .titleLarge
+                          ?.copyWith(color: settingProvider.themMode == ThemeMode.light
+                          ? AppTheme.darktBlack
+                          : AppTheme.white,),
                     ),
                   ),
                 ),

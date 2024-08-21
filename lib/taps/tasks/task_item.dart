@@ -7,6 +7,7 @@ import 'package:todo/Auth/user_provider.dart';
 import 'package:todo/app_them.dart';
 import 'package:todo/firebase_function.dart';
 import 'package:todo/models/task_model.dart';
+import 'package:todo/taps/setting/setting_provider.dart';
 import 'package:todo/taps/tasks/task_edit.dart';
 import 'package:todo/taps/tasks/tasks_provider.dart';
 
@@ -41,6 +42,7 @@ class _TaskItemState extends State<TaskItem> {
   @override
   Widget build(BuildContext context) {
     TasksProvider tasksProvider = Provider.of<TasksProvider>(context);
+        SettingProvider settingProvider = Provider.of<SettingProvider>(context);
     ThemeData theme = Theme.of(context);
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
@@ -69,7 +71,9 @@ class _TaskItemState extends State<TaskItem> {
           child: Container(
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
-              color: AppTheme.white,
+              color: settingProvider.themMode == ThemeMode.light
+                          ? AppTheme.white
+                          : AppTheme.darktItem,
               borderRadius: BorderRadius.circular(20),
             ),
             height: MediaQuery.of(context).size.height * .13,

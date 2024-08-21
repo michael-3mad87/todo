@@ -7,11 +7,12 @@ import 'package:todo/Auth/user_provider.dart';
 import 'package:todo/app_them.dart';
 import 'package:todo/firebase_function.dart';
 import 'package:todo/home_page.dart';
+import 'package:todo/taps/setting/setting_provider.dart';
 import 'package:todo/taps/tasks/custom_button.dart';
 import 'package:todo/taps/tasks/text_form_field.dart';
 
 class LoginScreen extends StatefulWidget {
-  static const String routeName = '/login';
+  static const String routeName = 'login';
   const LoginScreen({super.key});
 
   @override
@@ -27,11 +28,14 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+        SettingProvider settingProvider = Provider.of<SettingProvider>(context);
     return Scaffold(
       appBar: AppBar(
         title: Text(
           'Welcome Back',
-          style: Theme.of(context).textTheme.titleLarge,
+          style: Theme.of(context).textTheme.titleLarge?.copyWith( color: settingProvider.themMode == ThemeMode.light
+                          ? AppTheme.darktItem
+                          : AppTheme.white,),
         ),
       ),
       body: Padding(
@@ -82,8 +86,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 onPressed: () {
                   Navigator.of(context).pushNamed(RegisterScreen.routeName);
                 },
-                child: const Text(
+                child:  Text(
                   "Don't have an account ?",
+                  style:TextStyle(color: AppTheme.primaryColor)
                 ),
               ),
             ],

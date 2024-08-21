@@ -48,9 +48,17 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
-      floatingActionButton:FloatingActionButton(onPressed: ()=> showModalBottomSheet(context: context,builder: (context) =>const AddTaskBottomSheet() ,),
-      child:const Icon(Icons.add , size: 32,) ,
-      ) ,
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => showModalBottomSheet(
+          context: context,
+          isScrollControlled: true,
+          builder: (context) => const AddTaskBottomSheet(),
+        ),
+        child: const Icon(
+          Icons.add,
+          size: 32,
+        ),
+      ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
